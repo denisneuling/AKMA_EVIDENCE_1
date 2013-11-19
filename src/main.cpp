@@ -131,7 +131,7 @@ void ROIObjectRecognizer::recognize() {
 		if (image.empty()) {
 			break;
 		} else {
-			this->backgroundSubtractor(image, this->foreground, 0.025f);
+			this->backgroundSubtractor(image, this->foreground, 1.125f);
 
 			if(!mouseActivated){
 				cv::Mat smeared = image.clone();
@@ -171,7 +171,7 @@ void ROIObjectRecognizer::recognize() {
 					<< std::endl;
 			}
 
-			if(!detected && x > (rectangleSize / 100 * 20) ){ // 50%
+			if(!detected && x > (rectangleSize / 100 * upperThreshold) ){ // 50%
 				detected = true;
 				COLOR = RED;
 
@@ -181,7 +181,7 @@ void ROIObjectRecognizer::recognize() {
 					std::cout << "[INFO ] Object {" << this->count << "} entered selected ROI." << std::endl;
 				}
 			}
-			if(detected && x < (rectangleSize / 100 * 1) ){ // 10%
+			if(detected && x < (rectangleSize / 100 * lowerThreshold) ){ // 10%
 				detected = false;
 				COLOR = BLACK;
 
@@ -286,7 +286,7 @@ int main(int argc, char ** argv) {
 			std::cout << "[ERROR] There arent enough frames to setup the background subtractor!" << std::endl;
 			return -1;
 		}
-		backgroundSubtractor(frame, foreGround, 0.025f);
+		backgroundSubtractor(frame, foreGround, 1.0f);
 	}
 
 	cv::namedWindow(windowName, 1);
